@@ -1,17 +1,7 @@
 import React, { Component } from "react";
+import _ from 'lodash';
 
 class QuestionContainer extends Component {
-
-   shuffleArray(array) {
-        let i = array.length - 1;
-        for (; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          const temp = array[i];
-          array[i] = array[j];
-          array[j] = temp;
-        }
-        return array;
-      }
 
     constructor() {
         super();
@@ -21,26 +11,32 @@ class QuestionContainer extends Component {
         };
     }
 
-    componentWillMount() {
+    componentDidMount() {
         const RenderHTMLQuestion = (props) => (<p dangerouslySetInnerHTML={{__html:props.HTML}}></p>)
         const RenderHTMLAnswer = (props) => (<li dangerouslySetInnerHTML={{__html:props.HTML}}></li>)
         fetch('https://opentdb.com/api.php?amount=10&category=9&type=multiple')
             .then(results => {
                 return results.json();
             }).then(data => {
+                
                 let questions = data.results.map((question, index) => {
                     return(
                         <div key={index} className="questionWrapper">
                             <div className="question" key={question.question}>
                                  <RenderHTMLQuestion HTML={question.question} />
                             </div>
+
                             <ul className="answers">
-                                <RenderHTMLAnswer key={question.correct_answer} HTML={question.correct_answer} />
-                             
-                               {question.incorrect_answers.map((answer, index) => (
-                                    <RenderHTMLAnswer key={index} HTML={answer} />
-                                ))}
-                           </ul>
+                                {question.incorrect_answers.map((answer, index) => {
+                                    let correctAnswer = false;
+                                    if(Math.floor(Math.random() * question.incorrect_answers.length-1) === index && !correctAnswer) {
+                                            correctAnswer = true;
+                                            return <> <RenderHTMLAnswer key={question.correct_answer} HTML={"correct " + question.correct_answer} /> <RenderHTMLAnswer key={index} HTML={"incorrect " + answer} /> </>
+                                    } else {
+                                        return <RenderHTMLAnswer key={index} HTML={"incorrect " + answer} />
+                                    }
+                                })}
+                            </ul>
                         </div>
                     )
                 })
