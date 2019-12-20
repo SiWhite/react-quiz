@@ -1,12 +1,20 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+import React, { Component } from "react";
+import ReactDOM from "react-dom";
+import QuestionContainer from "./components/QuestionContainer";
 
-ReactDOM.render(<App />, document.getElementById('root'));
+class CapicheQuiz extends Component {
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+    state = {
+       
+    };
+
+    render() {
+        return (
+            <div className="container">
+                <QuestionContainer></QuestionContainer>
+            </div>
+        )    
+    };
+};
+
+ReactDOM.render(<CapicheQuiz />, document.getElementById("root"));
