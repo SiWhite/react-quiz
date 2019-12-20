@@ -1,22 +1,22 @@
 import React, { Component } from "react";
 
-function shuffleArray(array) {
-    let i = array.length - 1;
-    for (; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      const temp = array[i];
-      array[i] = array[j];
-      array[j] = temp;
-    }
-    return array;
-  }
-
 class QuestionContainer extends Component {
+
+   shuffleArray(array) {
+        let i = array.length - 1;
+        for (; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          const temp = array[i];
+          array[i] = array[j];
+          array[j] = temp;
+        }
+        return array;
+      }
+
     constructor() {
         super();
         this.state = {
             questions: [],
-            correctAnswer: null,
             incorrect_answers: []
         };
     }
@@ -35,7 +35,7 @@ class QuestionContainer extends Component {
                                  <RenderHTMLQuestion HTML={question.question} />
                             </div>
                             <ul className="answers">
-                            <RenderHTMLAnswer key={question.correct_answer} HTML={question.correct_answer} />
+                                <RenderHTMLAnswer key={question.correct_answer} HTML={question.correct_answer} />
                              
                                {question.incorrect_answers.map((answer, index) => (
                                     <RenderHTMLAnswer key={index} HTML={answer} />
