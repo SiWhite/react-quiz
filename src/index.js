@@ -5,7 +5,8 @@ import QuestionContainer from "./components/QuestionContainer";
 class CapicheQuiz extends Component {
 
     state = {
-       
+       responses: 0,
+       score: 0
     };
 
     render() {
