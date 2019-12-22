@@ -4,26 +4,53 @@ class QuestionContainer extends Component {
 
     constructor() {
         super();
-        this.selected = this.selected.bind(this);
+        this.handleClick = this.handleClick.bind(this);
         this.state = {
             questions: [],
-            responses: 0
+            total_responses: 0,
+            correct_responses: 0
         };
     }
-
-    selected(e) {
-        this.setState({responses: this.state.responses + 1 })
-        var buttonValue = e.target.innerHTML;
-        var correct = e.target.getAttribute('data-correct')
-        if (correct) {
-            alert('correct answer!');
-        }
+    
+    handleClick = (event, prevState) => {
+       
+        var isCorrect = event.target.dataset.correct;
+        console.log('isCorrect = ',isCorrect);
+        if (this.state.total_responses <= 9) {
+            this.setState(
+                prevState => {
+                    var counter1 = 0;
+                    counter1 = prevState.total_responses + 1;
+                    return {total_responses: counter1}
+                },
+                // Completion callback
+                () => {
+                    console.log("total_responses: " + this.state.total_responses);
+                    console.log("correct_responses: " + this.state.correct_responses);
+                });
+            if (isCorrect === 'true') {
+                this.setState(
+                    // Updater
+                    prevState => {
+                        var counter2 = 0;
+                        counter2 = prevState.correct_responses + 1;
+                        return {correct_responses: counter2};
+                    }
+                );
+            }
+        } else {
+            this.setState(
+                ({total_responses: 10}
+            ))
+            console.log("total_responses: " + this.state.total_responses);
+            console.log("correct_responses: " + this.state.correct_responses);
+         }
     }
 
     componentDidMount() {
         const RenderHTMLQuestion = (props) => (<p dangerouslySetInnerHTML={{__html:props.HTML}}></p>)
-        const RenderHTMLIncorrectAnswer = (props) => (<button onClick={this.selected} dangerouslySetInnerHTML={{__html:props.HTML}}></button>)
-        const RenderHTMLCorrectAnswer = (props) => (<button onClick={this.selected} data-correct="true" dangerouslySetInnerHTML={{__html:props.HTML}}></button>)
+        const RenderHTMLIncorrectAnswer = (props) => (<button onClick={this.handleClick} data-correct="false" dangerouslySetInnerHTML={{__html:props.HTML}}></button>)
+        const RenderHTMLCorrectAnswer = (props) => (<button onClick={this.handleClick} data-correct="true" dangerouslySetInnerHTML={{__html:props.HTML}}></button>)
         fetch('https://opentdb.com/api.php?amount=10&category=9&type=multiple')
             .then(results => {
                 return results.json();
@@ -38,9 +65,9 @@ class QuestionContainer extends Component {
 
                             <ul className="answers">
                                 {question.incorrect_answers.map((answer, index) => {
-                                    return ( <RenderHTMLIncorrectAnswer  correct={false} key={index} HTML={answer} />  )
+                                    return ( <RenderHTMLIncorrectAnswer key={answer} HTML={answer} />  )
                                 })}
-                                <RenderHTMLCorrectAnswer correct={true} value={question.correct_answer} key={question.correct_answer} HTML={question.correct_answer} /> 
+                                <RenderHTMLCorrectAnswer key={question.correct_answer} HTML={question.correct_answer} /> 
                             </ul>
                         </div>
                     )
