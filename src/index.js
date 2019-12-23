@@ -3,11 +3,20 @@ import ReactDOM from "react-dom";
 import QuestionContainer from "./components/QuestionContainer";
 
 class CapicheQuiz extends Component {
+    
 
-    state = {
-       responses: 0,
-       score: 0
-    };
+    componentDidMount() {
+        this.shuffleLists();
+    }
+
+    shuffleLists = () => {
+        var elems = document.getElementsByTagName("ul");
+
+        for (let item of elems) {
+            console.log(item.id);
+        }
+
+    }
 
     render() {
         return (

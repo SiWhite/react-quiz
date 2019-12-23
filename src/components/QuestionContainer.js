@@ -23,14 +23,12 @@ class QuestionContainer extends Component {
                     counter1 = prevState.total_responses + 1;
                     return {total_responses: counter1}
                 },
-                // Completion callback
                 () => {
                     console.log("total_responses: " + this.state.total_responses);
                     console.log("correct_responses: " + this.state.correct_responses);
                 });
             if (isCorrect === 'true') {
                 this.setState(
-                    // Updater
                     prevState => {
                         var counter2 = 0;
                         counter2 = prevState.correct_responses + 1;
@@ -64,27 +62,30 @@ class QuestionContainer extends Component {
                             </div>
 
                             <ul className="answers">
+                                
                                 {question.incorrect_answers.map((answer, index) => {
-                                    return ( <RenderHTMLIncorrectAnswer key={answer} HTML={answer} />  )
+                                    return ( <li key={answer}><RenderHTMLIncorrectAnswer key={answer} HTML={answer} /></li>  )
                                 })}
-                                <RenderHTMLCorrectAnswer key={question.correct_answer} HTML={question.correct_answer} /> 
+                                
+                                <li>
+                                    <RenderHTMLCorrectAnswer key={question.correct_answer} HTML={question.correct_answer} /> 
+                                </li>
                             </ul>
                         </div>
                     )
-                })
+                }
+                )
                 this.setState({questions: questions});
             })
-            
         }
-        
 
-    render() {
-        return (
-            <div className="container2">
-                {this.state.questions}
-            </div>
-        )
-    }
+        render() {
+            return (
+                <div className="container2">
+                    {this.state.questions}
+                </div>
+            )
+        }
 }
 
 
