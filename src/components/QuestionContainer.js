@@ -11,6 +11,34 @@ class QuestionContainer extends Component {
             correct_responses: 0
         };
     }
+
+    getLists = () => {
+        var ulElems = document.getElementById('myContainer').getElementsByClassName('answers');
+        console.log(ulElems);
+        
+        for(var i = 0; i < ulElems.length; i++) {
+            var liElems = ulElems[i].getElementsByTagName("li");
+            var myArray = [];
+            for(var j = 0; j < liElems.length; j++) {
+                //console.log(liElems[j]);
+                myArray.push(liElems[j]);
+            }
+            this.shuffleArray(myArray);
+            for (var k of myArray) {
+               console.log('k = ',k.innerHTML);
+              }
+            console.log(myArray);
+            console.log('break');
+        }
+    }
+
+    shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+
     
     handleClick = (event, prevState) => {
        
@@ -56,7 +84,7 @@ class QuestionContainer extends Component {
                 
                 let questions = data.results.map((question, index) => {
                     return(
-                        <div key={index} className="questionWrapper">
+                        <div key={index} className="questionWrapper" id={index}>
                             <div className="question" key={question.question}>
                                  <RenderHTMLQuestion HTML={question.question} />
                             </div>
@@ -76,12 +104,13 @@ class QuestionContainer extends Component {
                 }
                 )
                 this.setState({questions: questions});
+                this.getLists();
             })
         }
 
         render() {
             return (
-                <div className="container2">
+                <div className="container2" id="myContainer">
                     {this.state.questions}
                 </div>
             )

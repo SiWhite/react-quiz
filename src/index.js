@@ -4,19 +4,10 @@ import QuestionContainer from "./components/QuestionContainer";
 
 class CapicheQuiz extends Component {
     
-
     componentDidMount() {
-        this.shuffleLists();
+        
     }
 
-    shuffleLists = () => {
-        var elems = document.getElementsByTagName("ul");
-
-        for (let item of elems) {
-            console.log(item.id);
-        }
-
-    }
 
     render() {
         return (
