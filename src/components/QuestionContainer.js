@@ -12,23 +12,20 @@ class QuestionContainer extends Component {
         };
     }
 
-    getLists = () => {
-        var ulElems = document.getElementById('myContainer').getElementsByClassName('answers');
-        console.log(ulElems);
+    getAnswerLists = () => {
+        const answerLists = document.getElementById('quizContainer').getElementsByClassName('answers');
         
-        for(var i = 0; i < ulElems.length; i++) {
-            var liElems = ulElems[i].getElementsByTagName("li");
-            var myArray = [];
-            for(var j = 0; j < liElems.length; j++) {
-                //console.log(liElems[j]);
-                myArray.push(liElems[j]);
+        for(let i = 0; i < answerLists.length; i++) {
+            const answers = answerLists[i].getElementsByTagName("li");
+            let answersArray = [];
+            for(let j = 0; j < answers.length; j++) {
+                answersArray.push(answers[j]);
             }
-            this.shuffleArray(myArray);
-            for (var k of myArray) {
-               console.log('k = ',k.innerHTML);
+            this.shuffleArray(answersArray);
+            answerLists[i].innerHTML = '';
+            for (let a of answersArray) {
+                answerLists[i].appendChild(a);
               }
-            console.log(myArray);
-            console.log('break');
         }
     }
 
@@ -38,6 +35,25 @@ class QuestionContainer extends Component {
             [array[i], array[j]] = [array[j], array[i]];
         }
     }
+
+    removeSiblings = (elem) => {
+        let siblings = [];
+        let sibling = elem.parentNode.parentNode.firstChild;
+        
+        while (sibling) {
+            if (sibling.nodeType === 1 && sibling !== elem.parentNode) {
+                siblings.push(sibling)
+            }
+
+            sibling = sibling.nextSibling
+        }
+
+        for (sibling of siblings) {
+            sibling.remove();
+        }
+         
+        return;
+    };
 
     
     handleClick = (event, prevState) => {
@@ -64,12 +80,13 @@ class QuestionContainer extends Component {
                     }
                 );
             }
+            const elem = event.target;
+            this.removeSiblings(elem);
         } else {
             this.setState(
                 ({total_responses: 10}
             ))
             console.log("total_responses: " + this.state.total_responses);
-            console.log("correct_responses: " + this.state.correct_responses);
          }
     }
 
@@ -104,13 +121,13 @@ class QuestionContainer extends Component {
                 }
                 )
                 this.setState({questions: questions});
-                this.getLists();
+                this.getAnswerLists();
             })
         }
 
         render() {
             return (
-                <div className="container2" id="myContainer">
+                <div className="container2" id="quizContainer">
                     {this.state.questions}
                 </div>
             )

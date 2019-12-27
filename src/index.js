@@ -3,11 +3,6 @@ import ReactDOM from "react-dom";
 import QuestionContainer from "./components/QuestionContainer";
 
 class CapicheQuiz extends Component {
-    
-    componentDidMount() {
-        
-    }
-
 
     render() {
         return (
