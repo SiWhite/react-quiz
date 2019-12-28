@@ -4,11 +4,8 @@ class QuestionContainer extends Component {
 
     constructor() {
         super();
-        this.handleClick = this.handleClick.bind(this);
         this.state = {
             questions: [],
-            total_responses: 0,
-            correct_responses: 0
         };
     }
 
@@ -36,64 +33,10 @@ class QuestionContainer extends Component {
         }
     }
 
-    removeSiblings = (elem) => {
-        let siblings = [];
-        let sibling = elem.parentNode.parentNode.firstChild;
-        
-        while (sibling) {
-            if (sibling.nodeType === 1 && sibling !== elem.parentNode) {
-                siblings.push(sibling)
-            }
-
-            sibling = sibling.nextSibling
-        }
-
-        for (sibling of siblings) {
-            sibling.remove();
-        }
-         
-        return;
-    };
-
-    
-    handleClick = (event, prevState) => {
-       
-        var isCorrect = event.target.dataset.correct;
-        console.log('isCorrect = ',isCorrect);
-        if (this.state.total_responses <= 9) {
-            this.setState(
-                prevState => {
-                    var counter1 = 0;
-                    counter1 = prevState.total_responses + 1;
-                    return {total_responses: counter1}
-                },
-                () => {
-                    console.log("total_responses: " + this.state.total_responses);
-                    console.log("correct_responses: " + this.state.correct_responses);
-                });
-            if (isCorrect === 'true') {
-                this.setState(
-                    prevState => {
-                        var counter2 = 0;
-                        counter2 = prevState.correct_responses + 1;
-                        return {correct_responses: counter2};
-                    }
-                );
-            }
-            const elem = event.target;
-            this.removeSiblings(elem);
-        } else {
-            this.setState(
-                ({total_responses: 10}
-            ))
-            console.log("total_responses: " + this.state.total_responses);
-         }
-    }
-
     componentDidMount() {
         const RenderHTMLQuestion = (props) => (<p dangerouslySetInnerHTML={{__html:props.HTML}}></p>)
-        const RenderHTMLIncorrectAnswer = (props) => (<button onClick={this.handleClick} data-correct="false" dangerouslySetInnerHTML={{__html:props.HTML}}></button>)
-        const RenderHTMLCorrectAnswer = (props) => (<button onClick={this.handleClick} data-correct="true" dangerouslySetInnerHTML={{__html:props.HTML}}></button>)
+        const RenderHTMLIncorrectAnswer = (props) => (<button onClick={this.props.handleClick} data-correct="false" dangerouslySetInnerHTML={{__html:props.HTML}}></button>)
+        const RenderHTMLCorrectAnswer = (props) => (<button onClick={this.props.handleClick} data-correct="true" dangerouslySetInnerHTML={{__html:props.HTML}}></button>)
         fetch('https://opentdb.com/api.php?amount=10&category=9&type=multiple')
             .then(results => {
                 return results.json();
