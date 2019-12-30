@@ -10,7 +10,8 @@ class CapicheQuiz extends Component {
         this.handleClick = this.handleClick.bind(this);
         this.state = {
             total_responses: 0,
-            correct_responses: 0
+            correct_responses: 0,
+            show_results: false
         };
       }
 
@@ -65,14 +66,30 @@ class CapicheQuiz extends Component {
             console.log("total_responses: " + this.state.total_responses);
          }
     }
-    
 
+    showResults = () => {
+        this.setState(prevState => ({
+            show_results: !prevState.show_results
+        }));
+    }
+    
     render() {
-        return (
-            <div className="container">
-                <QuestionContainer handleClick = {this.handleClick}></QuestionContainer>
-            </div>
-        )    
+        if (this.state.show_results === false) {
+            return (
+                <div className="container">
+                    <QuestionContainer handleClick = {this.handleClick}></QuestionContainer>
+                    <button disabled={this.state.total_responses <= 9} onClick={this.showResults}>Submit results</button>
+                </div>
+            )   
+        } else {
+            return (
+                <div className="container">
+                    <h1>Results</h1>
+                    <p>You scored {this.state.correct_responses} out of 10</p>
+                    <button onClick={this.showResults}>Play again</button>
+                </div>
+            )   
+        } 
     };
 };
 
