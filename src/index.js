@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
+import './scss/base.scss';
 import QuestionContainer from "./components/QuestionContainer";
+
 
 class CapicheQuiz extends Component {
 
@@ -35,6 +37,7 @@ class CapicheQuiz extends Component {
     }
 
     handleClick = (event, prevState) => {
+        event.target.setAttribute('disabled','disabled');
         var isCorrect = event.target.dataset.correct;
         console.log('isCorrect = ',isCorrect);
         if (this.state.total_responses <= 9) {
@@ -72,13 +75,24 @@ class CapicheQuiz extends Component {
             show_results: !prevState.show_results
         }));
     }
+
+    resetQuiz = () => {
+        // const submitBtn = document.getElementById("btn-submit");
+        // submitBtn.classList.remove('show');
+        this.setState(prevState => ({
+            show_results: !prevState.show_results
+        }));
+        this.setState(
+            ({total_responses: 0, correct_responses: 0}))
+    }
     
     render() {
         if (this.state.show_results === false) {
             return (
                 <div className="container">
+                    <div id="spinner"></div> 
                     <QuestionContainer handleClick = {this.handleClick}></QuestionContainer>
-                    <button disabled={this.state.total_responses <= 9} onClick={this.showResults}>Submit results</button>
+                    <button id="btn-submit" disabled={this.state.total_responses <= 9} onClick={this.showResults}>Submit results</button>
                 </div>
             )   
         } else {
@@ -86,7 +100,7 @@ class CapicheQuiz extends Component {
                 <div className="container">
                     <h1>Results</h1>
                     <p>You scored {this.state.correct_responses} out of 10</p>
-                    <button onClick={this.showResults}>Play again</button>
+                    <button onClick={this.resetQuiz}>Play again</button>
                 </div>
             )   
         } 

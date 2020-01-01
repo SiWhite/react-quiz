@@ -33,7 +33,23 @@ class QuestionContainer extends Component {
         }
     }
 
+    showSpinner() {
+        const spinner = document.getElementById("spinner");
+        spinner.classList.add('show');
+        setTimeout(() => {
+            spinner.classList.remove('show');
+        }, 5000);
+    }
+
+    hideSpinner() {
+        const spinner = document.getElementById("spinner");
+        const submitBtn = document.getElementById("btn-submit");
+        spinner.classList.remove('show');
+        submitBtn.classList.add('show');
+    }
+
     componentDidMount() {
+        this.showSpinner();
         const RenderHTMLQuestion = (props) => (<p dangerouslySetInnerHTML={{__html:props.HTML}}></p>)
         const RenderHTMLIncorrectAnswer = (props) => (<button onClick={this.props.handleClick} data-correct="false" dangerouslySetInnerHTML={{__html:props.HTML}}></button>)
         const RenderHTMLCorrectAnswer = (props) => (<button onClick={this.props.handleClick} data-correct="true" dangerouslySetInnerHTML={{__html:props.HTML}}></button>)
@@ -41,8 +57,10 @@ class QuestionContainer extends Component {
             .then(results => {
                 return results.json();
             }).then(data => {
-                
+                this.hideSpinner()
                 let questions = data.results.map((question, index) => {
+                    question["isAnswered"] = false;
+                    console.log(question);
                     return(
                         <div key={index} className="questionWrapper" id={index}>
                             <div className="question" key={question.question}>
