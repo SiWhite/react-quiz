@@ -29,22 +29,62 @@
     }
   }
 
-  #btn-submit {
-      visibility: hidden;
-      &.show {
-        visibility: visible;
-    }
-  }
-
-  #quizContainer {
-      padding: 50px;
+  .container {
       border: 1px solid #ccc;
       border-radius: 5px;
-      margin: 50px;
+      margin-top: 25px;
+      padding: 25px;
+      margin-bottom: 50px;
+      @media (max-width: 575px) {
+          border: none;
+          margin-top: 0;
+          margin-bottom: 0;
+      }
+      .questionsContainer {
+          position: relative;
+          min-height: 200px;
+      }
+      a {
+          color: #47bded;
+      }
       button {
           appearance: none;
-          background: #fff;
-          color: #212529;
+          background: #008cc8;
+          color: white;
+          padding: 10px;
+          border-color: #008cc8;
+          border-radius: 2px;
+          margin-bottom: 10px;
+          &:hover {
+            background: #47bded;
+            border-color: #47bded;
+          }
+          &#btn-submit {
+            background: green;
+            border-color: green;
+            color: white;
+            visibility: hidden;
+            float: right;
+            margin-bottom: 20px;
+            margin-right: 20px;
+            &:disabled {
+                opacity: 0.5;
+            }
+            &.show {
+              visibility: visible;
+          }
+        }
+        &.resetBtn {
+            background: green;
+            border-color: green;
+            color: white;
+            &:disabled {
+                opacity: 0.5;
+            }
+            &.show {
+              visibility: visible;
+          }
+        }
       }
       .intro {
         margin-bottom: 30px;

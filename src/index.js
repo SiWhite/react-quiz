@@ -14,7 +14,8 @@ class CapicheQuiz extends Component {
         this.state = {
             total_responses: 0,
             correct_responses: 0,
-            show_results: false
+            show_results: false,
+            results_message: ''
         };
       }
 
@@ -72,11 +73,28 @@ class CapicheQuiz extends Component {
     }
 
     showResults = () => {
+        this.setResultsMessage();
         this.setState(prevState => ({
             show_results: !prevState.show_results
         }));
         const submitBtn = document.getElementById("btn-submit");
         submitBtn.classList.remove('show');
+    }
+
+    setResultsMessage = (prevState) => {
+        if (this.state.correct_responses < 3) {
+            this.setState(prevState => ({
+                results_message: 'Not great, try harder next time.'
+            }));
+        } else if (this.state.correct_responses > 4 && this.state.correct_responses < 8) {
+            this.setState(prevState => ({
+                results_message: 'Not too bad, see if you can beat your score next time.'
+            }));
+        } else if (this.state.correct_responses >= 8) {
+            this.setState(prevState => ({
+                results_message: 'Woah. Check out the big brain on you! Nice work.'
+            }));
+        }
     }
 
     resetQuiz = () => {
@@ -91,9 +109,10 @@ class CapicheQuiz extends Component {
         if (this.state.show_results === false) {
             return (
                 <div className="container">
-                    <div id="spinner"></div> 
-                    <QuestionContainer handleClick = {this.handleClick}></QuestionContainer>
-                    <button id="btn-submit" disabled={this.state.total_responses <= 9} onClick={this.showResults}>Submit results</button>
+                    <div class="clearfix">
+                        <QuestionContainer handleClick = {this.handleClick}></QuestionContainer>
+                        <button id="btn-submit" disabled={this.state.total_responses <= 9} onClick={this.showResults}>Submit results</button>
+                    </div>
                 </div>
             )   
         } else {
@@ -101,7 +120,8 @@ class CapicheQuiz extends Component {
                 <div className="container">
                     <h1>Results</h1>
                     <p>You scored {this.state.correct_responses} out of 10</p>
-                    <button onClick={this.resetQuiz}>Play again</button>
+                    <p>{this.state.results_message}</p>
+                    <button className="resetBtn" onClick={this.resetQuiz}>Play again</button>
                 </div>
             )   
         } 
