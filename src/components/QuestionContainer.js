@@ -89,6 +89,10 @@ class QuestionContainer extends Component {
         render() {
             return (
                 <div className="container2" id="quizContainer">
+                    <div className="intro">
+                        <h1>React.js Quiz App</h1>
+                        <p>A quiz app built with React.js by <a href="https://silentdesigns.co.nz" target="_blank">Silent Designs</a>. Click on your selected answer for each trivia question below, and then click the submit button at the end to see how you scored.</p>
+                    </div>
                     {this.state.questions}
                 </div>
             )

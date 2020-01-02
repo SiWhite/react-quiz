@@ -1,3 +1,4 @@
+import 'bootstrap/dist/css/bootstrap.css';
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import './scss/base.scss';
@@ -74,11 +75,11 @@ class CapicheQuiz extends Component {
         this.setState(prevState => ({
             show_results: !prevState.show_results
         }));
+        const submitBtn = document.getElementById("btn-submit");
+        submitBtn.classList.remove('show');
     }
 
     resetQuiz = () => {
-        // const submitBtn = document.getElementById("btn-submit");
-        // submitBtn.classList.remove('show');
         this.setState(prevState => ({
             show_results: !prevState.show_results
         }));

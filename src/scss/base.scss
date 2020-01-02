@@ -35,3 +35,36 @@
         visibility: visible;
     }
   }
+
+  #quizContainer {
+      padding: 50px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      margin: 50px;
+      button {
+          appearance: none;
+          background: #fff;
+          color: #212529;
+      }
+      .intro {
+        margin-bottom: 30px;
+        h1 {
+            margin-bottom: 15px;
+        }
+      }
+      .questionWrapper {
+          background: #eee;
+          padding: 15px;
+          margin-bottom: 30px;
+          border: 1px solid #ccc;
+          border-radius: 5px;
+          ul {
+            list-style: none;
+            padding: 0;
+            li {
+                display: inline;
+                margin-right: 25px;
+            }
+        }
+      }
+  }
