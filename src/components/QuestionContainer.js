@@ -5,7 +5,7 @@ class QuestionContainer extends Component {
     constructor() {
         super();
         this.state = {
-            questions: [],
+            questions: []
         };
     }
 
@@ -51,7 +51,7 @@ class QuestionContainer extends Component {
     componentDidMount() {
         this.showSpinner();
         const RenderHTMLQuestion = (props) => (<p dangerouslySetInnerHTML={{__html:props.HTML}}></p>)
-        const RenderHTMLIncorrectAnswer = (props) => (<button onClick={this.props.handleClick} data-correct="false" dangerouslySetInnerHTML={{__html:props.HTML}}></button>)
+        const RenderHTMLIncorrectAnswer = (props) => (<button onClick={this.props.handleClick} data-correct="false" dangerouslySetInnerHTML={{__html:props.HTML}} data-question={props.question}></button>)
         const RenderHTMLCorrectAnswer = (props) => (<button onClick={this.props.handleClick} data-correct="true" dangerouslySetInnerHTML={{__html:props.HTML}}></button>)
         fetch('https://opentdb.com/api.php?amount=10&category=9&type=multiple')
             .then(results => {
@@ -59,8 +59,6 @@ class QuestionContainer extends Component {
             }).then(data => {
                 this.hideSpinner()
                 let questions = data.results.map((question, index) => {
-                    question["isAnswered"] = false;
-                    console.log(question);
                     return(
                         <div key={index} className="questionWrapper" id={index}>
                             <div className="question" key={question.question}>
@@ -68,11 +66,9 @@ class QuestionContainer extends Component {
                             </div>
 
                             <ul className="answers">
-                                
                                 {question.incorrect_answers.map((answer, index) => {
-                                    return ( <li key={answer}><RenderHTMLIncorrectAnswer key={answer} HTML={answer} /></li>  )
+                                    return ( <li key={answer}><RenderHTMLIncorrectAnswer key={answer} HTML={answer} question={question.question}/></li>)
                                 })}
-                                
                                 <li>
                                     <RenderHTMLCorrectAnswer key={question.correct_answer} HTML={question.correct_answer} /> 
                                 </li>
@@ -91,7 +87,7 @@ class QuestionContainer extends Component {
                 <div className="col-12" id="quizContainer">
                     <div className="intro">
                         <h1>React.js Quiz App</h1>
-                        <p>A quiz app built with React.js by <a href="https://silentdesigns.co.nz" target="_blank">Silent Designs</a>.</p>
+                        <p>A quiz app built with React.js by <a href="https://silentdesigns.co.nz" target="_blank" rel="noopener noreferrer">Silent Designs</a>.</p>
                         <p>Click on your selected answer for each trivia question below, and then click the submit button at the end to see how you scored.</p>
                     </div>
                     <div className="questionsContainer">

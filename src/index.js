@@ -15,7 +15,8 @@ class CapicheQuiz extends Component {
             total_responses: 0,
             correct_responses: 0,
             show_results: false,
-            results_message: ''
+            results_message: '',
+            incorrectAnswers: []
         };
       }
 
@@ -40,8 +41,9 @@ class CapicheQuiz extends Component {
 
     handleClick = (event, prevState) => {
         event.target.setAttribute('disabled','disabled');
-        var isCorrect = event.target.dataset.correct;
-        console.log('isCorrect = ',isCorrect);
+        const isCorrect = event.target.dataset.correct;
+        const incorrectlyAnsweredQuestion = event.target.dataset.question;
+        
         if (this.state.total_responses <= 9) {
             this.setState(
                 prevState => {
@@ -56,11 +58,17 @@ class CapicheQuiz extends Component {
             if (isCorrect === 'true') {
                 this.setState(
                     prevState => {
-                        var counter2 = 0;
+                        let counter2 = 0;
                         counter2 = prevState.correct_responses + 1;
                         return {correct_responses: counter2};
                     }
                 );
+            } else {
+                this.setState(
+                    prevState => {
+                    const incorrectAnswers = prevState.incorrectAnswers.concat(incorrectlyAnsweredQuestion);
+                    this.setState({ incorrectAnswers: incorrectAnswers })
+                  });
             }
             const elem = event.target;
             this.removeSiblings(elem);
@@ -70,6 +78,7 @@ class CapicheQuiz extends Component {
             ))
             console.log("total_responses: " + this.state.total_responses);
          }
+        // console.log("incorrectAnswers: " + this.state.incorrectAnswers);
     }
 
     showResults = () => {
@@ -82,11 +91,11 @@ class CapicheQuiz extends Component {
     }
 
     setResultsMessage = (prevState) => {
-        if (this.state.correct_responses < 3) {
+        if (this.state.correct_responses <= 3) {
             this.setState(prevState => ({
                 results_message: 'Not great, try harder next time.'
             }));
-        } else if (this.state.correct_responses > 4 && this.state.correct_responses < 8) {
+        } else if (this.state.correct_responses >= 4 && this.state.correct_responses < 8) {
             this.setState(prevState => ({
                 results_message: 'Not too bad, see if you can beat your score next time.'
             }));
@@ -109,18 +118,24 @@ class CapicheQuiz extends Component {
         if (this.state.show_results === false) {
             return (
                 <div className="container">
-                    <div class="clearfix">
+                    <div className="clearfix">
                         <QuestionContainer handleClick = {this.handleClick}></QuestionContainer>
                         <button id="btn-submit" disabled={this.state.total_responses <= 9} onClick={this.showResults}>Submit results</button>
                     </div>
                 </div>
             )   
         } else {
+            const RenderHTMLIncorrectlyAnsweredQuestion = (props) => (<li dangerouslySetInnerHTML={{__html:props.HTML}}></li>);
             return (
                 <div className="container">
                     <h1>Results</h1>
                     <p>You scored {this.state.correct_responses} out of 10</p>
                     <p>{this.state.results_message}</p>
+                    <ol>
+                    {this.state.incorrectAnswers.map(incorrectAnswer => (
+                        <RenderHTMLIncorrectlyAnsweredQuestion key={incorrectAnswer} HTML={incorrectAnswer}/>
+                    ))}
+                    </ol>
                     <button className="resetBtn" onClick={this.resetQuiz}>Play again</button>
                 </div>
             )   
