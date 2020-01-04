@@ -49,10 +49,11 @@ class QuestionContainer extends Component {
     }
 
     componentDidMount() {
+        window.scrollTo(0, 0)
         this.showSpinner();
         const RenderHTMLQuestion = (props) => (<p dangerouslySetInnerHTML={{__html:props.HTML}}></p>)
-        const RenderHTMLIncorrectAnswer = (props) => (<button onClick={this.props.handleClick} data-correct="false" dangerouslySetInnerHTML={{__html:props.HTML}} data-question={props.question}></button>)
-        const RenderHTMLCorrectAnswer = (props) => (<button onClick={this.props.handleClick} data-correct="true" dangerouslySetInnerHTML={{__html:props.HTML}}></button>)
+        const RenderHTMLIncorrectAnswer = (props) => (<button onClick={this.props.handleClick} data-correct="false" dangerouslySetInnerHTML={{__html:props.HTML}} data-question={props.question} data-correctanswer={props.correctanswer}></button>)
+        const RenderHTMLCorrectAnswer = (props) => (<button onClick={this.props.handleClick} data-correct="true" dangerouslySetInnerHTML={{__html:props.HTML}} data-question={props.question} data-correctanswer={props.correctanswer}></button>)
         fetch('https://opentdb.com/api.php?amount=10&category=9&type=multiple')
             .then(results => {
                 return results.json();
@@ -67,10 +68,10 @@ class QuestionContainer extends Component {
 
                             <ul className="answers">
                                 {question.incorrect_answers.map((answer, index) => {
-                                    return ( <li key={answer}><RenderHTMLIncorrectAnswer key={answer} HTML={answer} question={question.question}/></li>)
+                                    return ( <li key={answer}><RenderHTMLIncorrectAnswer key={answer} HTML={answer} question={question.question} correctanswer={question.correct_answer}/></li>)
                                 })}
                                 <li>
-                                    <RenderHTMLCorrectAnswer key={question.correct_answer} HTML={question.correct_answer} /> 
+                                    <RenderHTMLCorrectAnswer key={question.correct_answer} HTML={question.correct_answer} question={question.question} correctanswer={question.correct_answer}/> 
                                 </li>
                             </ul>
                         </div>

@@ -40,6 +40,33 @@
           margin-top: 0;
           margin-bottom: 0;
       }
+      &.results-container {
+        .results-intro {
+            margin-bottom: 30px;
+            h4 {
+                span {
+                    &.green {
+                        color: green;
+                    }
+                    &.red {
+                        color: red;
+                    }
+                }
+            }
+        }
+        ul {
+            margin-bottom: 30px;
+            background: #eee;
+            padding: 15px;
+            margin-bottom: 30px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            li:nth-child(even) {
+                margin-bottom: 15px;
+                color: green;
+            }
+        }
+      }
       .questionsContainer {
           position: relative;
           min-height: 200px;
@@ -91,6 +118,9 @@
         h1 {
             margin-bottom: 15px;
         }
+      }
+      ul {
+          list-style: none;
       }
       .questionWrapper {
           background: #eee;

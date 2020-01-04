@@ -9,6 +9,7 @@ class CapicheQuiz extends Component {
 
     constructor(props) {
         super(props)
+        this.myRef = React.createRef() 
     
         this.handleClick = this.handleClick.bind(this);
         this.state = {
@@ -16,7 +17,9 @@ class CapicheQuiz extends Component {
             correct_responses: 0,
             show_results: false,
             results_message: '',
-            incorrectAnswers: []
+            incorrectAnswers: [],
+            correctAnswers: [],
+            correctResults: []
         };
       }
 
@@ -42,8 +45,8 @@ class CapicheQuiz extends Component {
     handleClick = (event, prevState) => {
         event.target.setAttribute('disabled','disabled');
         const isCorrect = event.target.dataset.correct;
-        const incorrectlyAnsweredQuestion = event.target.dataset.question;
-        
+        const answeredQuestion = event.target.dataset.question;
+        const correctAnswer = event.target.dataset.correctanswer;
         if (this.state.total_responses <= 9) {
             this.setState(
                 prevState => {
@@ -60,14 +63,17 @@ class CapicheQuiz extends Component {
                     prevState => {
                         let counter2 = 0;
                         counter2 = prevState.correct_responses + 1;
+                        const correctAnswers = prevState.correctAnswers.concat(answeredQuestion, correctAnswer);
+                        this.setState({ correctAnswers: correctAnswers })
                         return {correct_responses: counter2};
                     }
                 );
             } else {
                 this.setState(
                     prevState => {
-                    const incorrectAnswers = prevState.incorrectAnswers.concat(incorrectlyAnsweredQuestion);
-                    this.setState({ incorrectAnswers: incorrectAnswers })
+                    const incorrectAnswers = prevState.incorrectAnswers.concat(answeredQuestion, correctAnswer);
+                    //const correctResultsAnswer = prevState.correctResults.concat(correctAnswer);
+                    this.setState({ incorrectAnswers: incorrectAnswers})
                   });
             }
             const elem = event.target;
@@ -78,7 +84,6 @@ class CapicheQuiz extends Component {
             ))
             console.log("total_responses: " + this.state.total_responses);
          }
-        // console.log("incorrectAnswers: " + this.state.incorrectAnswers);
     }
 
     showResults = () => {
@@ -108,12 +113,28 @@ class CapicheQuiz extends Component {
 
     resetQuiz = () => {
         this.setState(prevState => ({
-            show_results: !prevState.show_results
+            show_results: !prevState.show_results,
+            total_responses: 0, correct_responses: 0,
+            incorrectAnswers: [],
+            correctAnswers: [],
+            correctResults: []
+            
         }));
-        this.setState(
-            ({total_responses: 0, correct_responses: 0}))
     }
-    
+
+    componentDidMount = () => this.handleScroll()
+
+    handleScroll = () => {
+        if (this.state.show_results !== false) {
+            const { index, selected } = this.props
+            if (index === selected) {
+            setTimeout(() => {
+                this.myRef.current.scrollIntoView({ behavior: 'smooth' })
+            }, 500)
+            }
+        }
+    }
+
     render() {
         if (this.state.show_results === false) {
             return (
@@ -125,22 +146,51 @@ class CapicheQuiz extends Component {
                 </div>
             )   
         } else {
-            const RenderHTMLIncorrectlyAnsweredQuestion = (props) => (<li dangerouslySetInnerHTML={{__html:props.HTML}}></li>);
-            return (
-                <div className="container">
-                    <h1>Results</h1>
-                    <p>You scored {this.state.correct_responses} out of 10</p>
-                    <p>{this.state.results_message}</p>
-                    <ol>
-                    {this.state.incorrectAnswers.map(incorrectAnswer => (
-                        <RenderHTMLIncorrectlyAnsweredQuestion key={incorrectAnswer} HTML={incorrectAnswer}/>
-                    ))}
-                    </ol>
-                    <button className="resetBtn" onClick={this.resetQuiz}>Play again</button>
-                </div>
-            )   
+            const RenderHTMLAnsweredQuestion = (props) => (<li dangerouslySetInnerHTML={{__html:props.HTML}}></li>);
+            if (this.state.correct_responses >= 1) {
+                return (
+                    <div className="container results-container" ref={this.myRef}>
+                        <div className="results-intro">
+                            <h1>Results</h1>
+                            <p>You scored {this.state.correct_responses} out of 10</p>
+                            <p>{this.state.results_message}</p>
+                        </div>
+                        <h4>You <span className="green">correctly</span> answered the following questions:</h4>
+                        <ul>
+                        {this.state.correctAnswers.map(correctAnswer => (
+                            <RenderHTMLAnsweredQuestion key={correctAnswer} HTML={correctAnswer}/>
+                        ))}
+                        </ul>
+                        <h4>You <span className="red">incorrectly</span> answered the following questions, the correct answers were:</h4>
+                        <ul>
+                        {this.state.incorrectAnswers.map(incorrectAnswer => (
+                            <RenderHTMLAnsweredQuestion key={incorrectAnswer} HTML={incorrectAnswer}/>
+                        ))}
+                        </ul>
+                        <button className="resetBtn" onClick={this.resetQuiz}>Play again</button>
+                    </div>
+                )   
+            } else {
+                return (
+                    <div className="container results-container" ref={this.myRef}>
+                        <div className="results-intro">
+                            <h1>Results</h1>
+                            <p>You scored {this.state.correct_responses} out of 10</p>
+                            <p>{this.state.results_message}</p>
+                        </div>
+                        <h4>You <span className="red">incorrectly</span> answered the following questions, the correct answers were:</h4>
+                        <ul>
+                        {this.state.incorrectAnswers.map(incorrectAnswer => (
+                            <RenderHTMLAnsweredQuestion key={incorrectAnswer} HTML={incorrectAnswer}/>
+                        ))}
+                        </ul>
+                        <button className="resetBtn" onClick={this.resetQuiz}>Play again</button>
+                    </div>
+                )   
+            }
+            
         } 
     };
 };
 
-ReactDOM.render(<CapicheQuiz />, document.getElementById("root"));
+ReactDOM.render(<CapicheQuiz/>, document.getElementById("root"));
