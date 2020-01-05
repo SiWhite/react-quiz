@@ -98,7 +98,7 @@ class CapicheQuiz extends Component {
     setResultsMessage = (prevState) => {
         if (this.state.correct_responses <= 3) {
             this.setState(prevState => ({
-                results_message: 'Not great, try harder next time.'
+                results_message: 'Not great, I\'m sure you can do better next time.'
             }));
         } else if (this.state.correct_responses >= 4 && this.state.correct_responses < 8) {
             this.setState(prevState => ({
@@ -122,20 +122,12 @@ class CapicheQuiz extends Component {
         }));
     }
 
-    componentDidMount = () => this.handleScroll()
-
-    handleScroll = () => {
-        if (this.state.show_results !== false) {
-            const { index, selected } = this.props
-            if (index === selected) {
-            setTimeout(() => {
-                this.myRef.current.scrollIntoView({ behavior: 'smooth' })
-            }, 500)
-            }
-        }
-    }
+    
 
     render() {
+        if (this.state.total_responses === 0 || this.state.show_results === true ) {
+            window.scrollTo(0, 0);
+        }
         if (this.state.show_results === false) {
             return (
                 <div className="container">
@@ -175,8 +167,7 @@ class CapicheQuiz extends Component {
                     <div className="container results-container" ref={this.myRef}>
                         <div className="results-intro">
                             <h1>Results</h1>
-                            <p>You scored {this.state.correct_responses} out of 10</p>
-                            <p>{this.state.results_message}</p>
+                            <p>You scored {this.state.correct_responses} out of 10. {this.state.results_message}</p>
                         </div>
                         <h4>You <span className="red">incorrectly</span> answered the following questions, the correct answers were:</h4>
                         <ul>

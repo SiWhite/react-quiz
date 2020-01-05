@@ -43,17 +43,18 @@
       &.results-container {
         .results-intro {
             margin-bottom: 30px;
-            h4 {
-                span {
-                    &.green {
-                        color: green;
-                    }
-                    &.red {
-                        color: red;
-                    }
+        }
+        h4 {
+            span {
+                &.green {
+                    color: green;
+                }
+                &.red {
+                    color: red;
                 }
             }
         }
+
         ul {
             margin-bottom: 30px;
             background: #eee;

@@ -54,6 +54,8 @@ class QuestionContainer extends Component {
         const RenderHTMLQuestion = (props) => (<p dangerouslySetInnerHTML={{__html:props.HTML}}></p>)
         const RenderHTMLIncorrectAnswer = (props) => (<button onClick={this.props.handleClick} data-correct="false" dangerouslySetInnerHTML={{__html:props.HTML}} data-question={props.question} data-correctanswer={props.correctanswer}></button>)
         const RenderHTMLCorrectAnswer = (props) => (<button onClick={this.props.handleClick} data-correct="true" dangerouslySetInnerHTML={{__html:props.HTML}} data-question={props.question} data-correctanswer={props.correctanswer}></button>)
+        
+        /* TODO: Allow custom questions via custom .json file */
         fetch('https://opentdb.com/api.php?amount=10&category=9&type=multiple')
             .then(results => {
                 return results.json();
@@ -89,7 +91,7 @@ class QuestionContainer extends Component {
                     <div className="intro">
                         <h1>React.js Quiz App</h1>
                         <p>A quiz app built with React.js by <a href="https://silentdesigns.co.nz" target="_blank" rel="noopener noreferrer">Silent Designs</a>.</p>
-                        <p>Click on your selected answer for each trivia question below, and then click the submit button at the end to see how you scored.</p>
+                        <p>Click on your selected answer for each trivia question below. Once you have answered all 10 questions, click the submit to see how you scored.</p>
                     </div>
                     <div className="questionsContainer">
                         <div id="spinner"></div> 
