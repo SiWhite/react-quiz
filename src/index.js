@@ -133,7 +133,7 @@ class CapicheQuiz extends Component {
                 <div className="container">
                     <div className="clearfix">
                         <QuestionContainer handleClick = {this.handleClick}></QuestionContainer>
-                        <button id="btn-submit" disabled={this.state.total_responses <= 9} onClick={this.showResults}>Submit results</button>
+                        <button id="btn-submit" disabled={this.state.total_responses <= 9} onClick={this.showResults}>Submit your answers</button>
                     </div>
                 </div>
             )   
