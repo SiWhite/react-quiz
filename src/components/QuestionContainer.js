@@ -90,8 +90,9 @@ class QuestionContainer extends Component {
                 <div className="col-12" id="quizContainer">
                     <div className="intro">
                         <h1>React.js Quiz App</h1>
-                        <p>A quiz app built with React.js by <a href="https://silentdesigns.co.nz" target="_blank" rel="noopener noreferrer">Silent Designs</a>.</p>
-                        <p>Click on your selected answer for each trivia question below. Once you have answered all 10 questions, click the submit button to see how you scored.</p>
+                        <p>A quiz app built with React.js by <a href="https://silentdesigns.co.nz" target="_blank" rel="noopener noreferrer">Silent Designs</a>.</p> 
+                        <p>Get the code from <a href="https://github.com/SiWhite/react-quiz" target="_blank" rel="noopener noreferrer">https://github.com/SiWhite/react-quiz</a>.</p>
+                        <p>Select an answer for each trivia question below by clicking on it. Once you have answered all 10 questions, click the submit button to see how well you did.</p>
                     </div>
                     <div className="questionsContainer">
                         <div id="spinner"></div> 
